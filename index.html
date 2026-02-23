@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="NEXT STORE">
-    <link rel="apple-touch-icon" href="https://i.pinimg.com/736x/d7/0e/4e/d70e4e70e90f23075276e0269f88d407.jpg">
+    <link rel="apple-touch-icon" href="insta.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -21,23 +21,32 @@
         .welcome-msg { color: #fff; font-size: 20px; font-weight: bold; margin-bottom: 10px; }
         .store-desc { color: #888; font-size: 14px; margin-bottom: 30px; line-height: 1.6; padding: 0 10px; }
         
+        /* Search Bar */
+        .search-bar { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #333; background: #1a1a1a; color: white; margin-bottom: 20px; box-sizing: border-box; outline: none; text-align: center; }
+
         .app-card { background: #1a1a1a; padding: 25px; border-radius: 25px; margin-bottom: 25px; border: 1px solid #333; position: relative; }
         .app-icon { width: 80px; height: 80px; border-radius: 18px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); object-fit: cover; }
         .app-info { color: #fff; font-size: 17px; font-weight: bold; margin-bottom: 5px; direction: ltr; }
         .app-details { color: #777; font-size: 13px; margin-bottom: 20px; direction: ltr; }
         
-        .btn-install { display: block; background: #ff3b30; color: #fff; padding: 15px; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 16px; transition: 0.3s; margin-bottom: 10px; }
-        .btn-install:hover { background: #e02d22; transform: translateY(-2px); }
-        
+        .btn-install { display: block; background: #ff3b30; color: #fff; padding: 15px; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 16px; transition: 0.3s; margin-bottom: 10px; cursor: pointer; }
         .btn-download { display: block; background: #333; color: #fff; padding: 12px; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 14px; transition: 0.3s; border: 1px solid #444; }
-        .btn-download:hover { background: #444; }
         
+        /* Loading Animation Overlay */
+        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #333; border-top: 4px solid #ff3b30; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
         .tg-btn { display: flex; align-items: center; justify-content: center; background: #229ED9; color: white; padding: 12px; text-decoration: none; border-radius: 12px; font-weight: bold; margin-top: 20px; font-size: 15px; }
-        .tg-btn i { margin-left: 10px; font-size: 20px; }
         .footer { margin-top: 25px; font-size: 11px; color: #444; }
     </style>
 </head>
 <body>
+
+    <div id="overlay">
+        <div class="spinner"></div>
+        <p style="margin-top: 15px;">چاوەڕێ بە...</p>
+    </div>
 
     <div class="container">
         <div class="logo-text">NEXT<span>STORE</span></div>
@@ -47,22 +56,25 @@
             باشترین ستۆر بۆ دابه‌زاندنا به‌رنامه‌ و یاریێن هاککری ب شێوه‌یه‌کێ ڕاسته‌وخۆ. 
             چاوه‌ڕێ بن، ل نێزیکترین ده‌م دێ چه‌ندین یاری و ئه‌پێن نوی و نایاب ل ستۆری هێنه‌ زێده‌کرن!
         </div>
-        
-        <img src="insta.png" alt="Instagram" class="app-icon">
 
-            <div class="app-details">Version: 408.1.0</div>
-            
-            <a href="itms-services://?action=download-manifest&url=https://ipa.ipasign.cc/manifest/0d2b5b3114e6.plist" class="btn-install">Direct Install</a>
-            <a href="https://www.mediafire.com/file/lnp54ciurbtufrc/Instagram+w_+Theta+No+Jailbreak+Cheats+408.1.0+Hacked+IPA+by+iOSGods.com.ipa/file" class="btn-download">Download IPA</a>
-        </div>
+        <input type="text" id="searchInput" class="search-bar" placeholder="بگەڕێ بۆ بەرنامەیەک..." onkeyup="searchApp()">
 
-        <div class="app-card">
-            <img src="https://i.pinimg.com/736x/d7/0e/4e/d70e4e70e90f23075276e0269f88d407.jpg" alt="Video Star" class="app-icon">
-            <div class="app-info">Video Star Pro</div>
-            <div class="app-details">Unlocked All Effects</div>
-            
-            <a href="itms-services://?action=download-manifest&url=https://signed.ipaomtk.com/plist/Videostar-Pro-IPAOMTK.com.plist" class="btn-install">Direct Install</a>
-            <a href="https://file.ipaomtk.com/Video%20Star/Videostar-Pro-IPAOMTK.com.ipa" class="btn-download">Download IPA</a>
+        <div id="appList">
+            <div class="app-card">
+                <img src="insta.png" alt="Instagram" class="app-icon">
+                <div class="app-info">Instagram Theta</div>
+                <div class="app-details">Version: 408.1.0</div>
+                <a onclick="installLink('itms-services://?action=download-manifest&url=https://ipa.ipasign.cc/manifest/0d2b5b3114e6.plist')" class="btn-install">Direct Install</a>
+                <a href="https://www.mediafire.com/file/lnp54ciurbtufrc/Instagram+w_+Theta+No+Jailbreak+Cheats+408.1.0+Hacked+IPA+by+iOSGods.com.ipa/file" class="btn-download">Download IPA</a>
+            </div>
+
+            <div class="app-card">
+                <img src="https://i.pinimg.com/736x/d7/0e/4e/d70e4e70e90f23075276e0269f88d407.jpg" alt="Video Star" class="app-icon">
+                <div class="app-info">Video Star Pro</div>
+                <div class="app-details">Unlocked All Effects</div>
+                <a onclick="installLink('itms-services://?action=download-manifest&url=https://signed.ipaomtk.com/plist/Videostar-Pro-IPAOMTK.com.plist')" class="btn-install">Direct Install</a>
+                <a href="https://file.ipaomtk.com/Video%20Star/Videostar-Pro-IPAOMTK.com.ipa" class="btn-download">Download IPA</a>
+            </div>
         </div>
 
         <a href="https://t.me/next_8ball" class="tg-btn">
@@ -73,5 +85,33 @@
         <div class="footer">© 2026 NEXT STORE - Security Verified</div>
     </div>
 
+    <script>
+        // Search Function
+        function searchApp() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('app-card');
+            for (let i = 0; i < cards.length; i++) {
+                let name = cards[i].getElementsByClassName('app-info')[0].innerText.toLowerCase();
+                if (name.includes(input)) {
+                    cards[i].style.display = "block";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+
+        // Install Animation Function
+        function installLink(url) {
+            document.getElementById('overlay').style.display = 'flex';
+            setTimeout(function() {
+                window.location.href = url;
+                setTimeout(function() {
+                    document.getElementById('overlay').style.display = 'none';
+                }, 1000);
+            }, 2000);
+        }
+    </script>
+
 </body>
 </html>
+
