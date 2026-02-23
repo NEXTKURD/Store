@@ -1,15 +1,20 @@
 {
   "name": "NEXT STORE",
   "short_name": "NEXT",
-  "description": "باشترین ستۆر بۆ بەرنامە و یاریێن هاککری",
+  "description": "باشترین ستۆر بۆ دابەزاندنا بەرنامە و یاریێن هاککری",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#ff3b30",
   "icons": [
     {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg",
+      "src": "logo.png",
       "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
       "type": "image/png"
     }
   ]
