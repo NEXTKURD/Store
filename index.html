@@ -35,12 +35,8 @@
         .btn-install { display: block; background: #ff3b30; color: #fff; padding: 15px; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 16px; transition: 0.3s; margin-bottom: 10px; cursor: pointer; }
         .btn-install:hover { background: #e02d22; transform: translateY(-2px); }
         
-        .btn-download { display: block; background: #333; color: #fff; padding: 12px; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 14px; transition: 0.3s; border: 1px solid #444; margin-bottom: 10px; }
+        .btn-download { display: block; background: #333; color: #fff; padding: 12px; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 14px; transition: 0.3s; border: 1px solid #444; }
         .btn-download:hover { background: #444; }
-
-        /* Custom Sign Button Style */
-        .btn-custom { display: block; background: #5856d6; color: #fff; padding: 12px; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 14px; transition: 0.3s; border: 1px solid #666; }
-        .btn-custom:hover { background: #4845b5; }
         
         /* Loading Animation Overlay */
         #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; }
@@ -77,7 +73,6 @@
                 <div class="app-details">WizardiOS | Version 56.18.0</div>
                 <a onclick="installLink('itms-services://?action=download-manifest&url=https://ipa.ipasign.cc/manifest/3beae2efc824.plist')" class="btn-install">Direct Install</a>
                 <a href="https://www.mediafire.com/file/a9k3vam4yv6ygmd/WizardiOS_8BP_56.18.0_18022026.ipa/file" class="btn-download">Download IPA</a>
-                <a href="https://sign.ipasign.cc/?ipa=https://www.mediafire.com/file/a9k3vam4yv6ygmd/WizardiOS_8BP_56.18.0_18022026.ipa/file" target="_blank" class="btn-custom"><i class="fas fa-file-signature"></i> Custom Sign</a>
             </div>
 
             <div class="app-card">
@@ -86,7 +81,6 @@
                 <div class="app-details">Version: 408.1.0</div>
                 <a onclick="installLink('itms-services://?action=download-manifest&url=https://ipa.ipasign.cc/manifest/0d2b5b3114e6.plist')" class="btn-install">Direct Install</a>
                 <a href="https://www.mediafire.com/file/lnp54ciurbtufrc/Instagram+w_+Theta+No+Jailbreak+Cheats+408.1.0+Hacked+IPA+by+iOSGods.com.ipa/file" class="btn-download">Download IPA</a>
-                <a href="https://sign.ipasign.cc/?ipa=https://www.mediafire.com/file/lnp54ciurbtufrc/Instagram+w_+Theta+No+Jailbreak+Cheats+408.1.0+Hacked+IPA+by+iOSGods.com.ipa/file" target="_blank" class="btn-custom"><i class="fas fa-file-signature"></i> Custom Sign</a>
             </div>
 
             <div class="app-card">
@@ -95,7 +89,6 @@
                 <div class="app-details">Unlocked All Effects</div>
                 <a onclick="installLink('itms-services://?action=download-manifest&url=https://signed.ipaomtk.com/plist/Videostar-Pro-IPAOMTK.com.plist')" class="btn-install">Direct Install</a>
                 <a href="https://file.ipaomtk.com/Video%20Star/Videostar-Pro-IPAOMTK.com.ipa" class="btn-download">Download IPA</a>
-                <a href="https://sign.ipasign.cc/?ipa=https://file.ipaomtk.com/Video%20Star/Videostar-Pro-IPAOMTK.com.ipa" target="_blank" class="btn-custom"><i class="fas fa-file-signature"></i> Custom Sign</a>
             </div>
         </div>
 
@@ -108,7 +101,6 @@
     </div>
 
     <script>
-        // Search Function
         function searchApp() {
             let input = document.getElementById('searchInput').value.toLowerCase();
             let cards = document.getElementsByClassName('app-card');
@@ -122,7 +114,6 @@
             }
         }
 
-        // Install Animation Function
         function installLink(url) {
             document.getElementById('overlay').style.display = 'flex';
             setTimeout(function() {
