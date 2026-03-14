@@ -21,7 +21,7 @@
         .search-bar { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #333; background: #1a1a1a; color: white; margin-bottom: 20px; text-align: center; }
         .app-card { background: #1a1a1a; padding: 20px; border-radius: 25px; margin-bottom: 20px; border: 1px solid #333; }
         .app-icon { width: 70px; height: 70px; border-radius: 18px; margin-bottom: 10px; }
-        .btn-install { display: block; background: #ff3b30; color: #fff; padding: 12px; border-radius: 12px; font-weight: bold; text-decoration: none; margin-bottom: 10px; cursor: pointer; }
+        .btn-install { display: block; background: #ff3b30; color: #fff; padding: 12px; border-radius: 12px; font-weight: bold; text-decoration: none; margin-bottom: 10px; }
         .btn-download { display: block; background: #333; color: #fff; padding: 10px; border-radius: 12px; font-size: 12px; text-decoration: none; }
         
         #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; }
@@ -29,7 +29,7 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
         .lock-screen { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; padding: 20px; position: fixed; top: 0; left: 0; width: 100%; z-index: 99999; }
-        .img-guide { width: 250px; border-radius: 15px; margin: 15px 0; border: 2px solid #333; }
+        .img-guide { width: 90%; max-width: 300px; border-radius: 15px; margin: 10px 0; border: 2px solid #333; }
     </style>
 </head>
 <body>
@@ -40,9 +40,10 @@
                 <div class="lock-screen">
                     <h1 style="color:#ff3b30;">NEXT STORE LOCKED</h1>
                     <p>بۆ پاراستنا ئەمنیاتێ، ستۆر دڤێت وەک ئەپ ل سەر شاشێ بیت.</p>
-                    <p>١. کلیکێ ل دوگمەیا <b>Share</b> ل خوارێ بکە</p>
-                    <img src="https://support.apple.com/library/content/dam/edam/applecare/images/en_US/iOS/ios17-iphone15-pro-safari-share-button.png" class="img-guide">
-                    <p>٢. پاشان <b>Add to Home Screen</b> هەلبژێرە</p>
+                    <p>١. کلیکێ ل دوگمەیا Share ل خوارێ بکە:</p>
+                    <img src="https://images.macrumors.com/article-new/2025/08/ios-add-to-home-screen1.jpg" class="img-guide">
+                    <p>٢. پاشان 'Add to Home Screen' هەلبژێرە:</p>
+                    <img src="https://images.macrumors.com/article-new/2025/08/ios-add-to-home-screen2.jpg" class="img-guide">
                 </div>
             `);
         }
@@ -57,19 +58,19 @@
 
         <div id="appList">
             <div class="app-card">
-                <img src="8ball.png" alt="8 Ball" class="app-icon">
+                <img src="8ball.png" class="app-icon">
                 <div style="font-weight:bold;">8 Ball Pool Hack</div>
                 <a onclick="installLink('itms-services://?action=download-manifest&url=https://cloudsigner.me/downloads/f339c49b-67f/manifest.plist')" class="btn-install">Direct Install</a>
                 <a href="https://www.mediafire.com/file/a9k3vam4yv6ygmd/WizardiOS_8BP_56.18.0_18022026.ipa/file" class="btn-download">Download IPA</a>
             </div>
             <div class="app-card">
-                <img src="insta.png" alt="Insta" class="app-icon">
+                <img src="insta.png" class="app-icon">
                 <div style="font-weight:bold;">Instagram Theta</div>
                 <a onclick="installLink('itms-services://?action=download-manifest&url=https://ipa.ipasign.cc/manifest/0d2b5b3114e6.plist')" class="btn-install">Direct Install</a>
                 <a href="https://www.mediafire.com/file/lnp54ciurbtufrc/Instagram+w_+Theta+No+Jailbreak+Cheats+408.1.0+Hacked+IPA+by+iOSGods.com.ipa" class="btn-download">Download IPA</a>
             </div>
             <div class="app-card">
-                <img src="https://i.pinimg.com/736x/d7/0e/4e/d70e4e70e90f23075276e0269f88d407.jpg" alt="Video Star" class="app-icon">
+                <img src="https://i.pinimg.com/736x/d7/0e/4e/d70e4e70e90f23075276e0269f88d407.jpg" class="app-icon">
                 <div style="font-weight:bold;">Video Star Pro</div>
                 <a onclick="installLink('itms-services://?action=download-manifest&url=https://signed.ipaomtk.com/plist/Videostar-Pro-IPAOMTK.com.plist')" class="btn-install">Direct Install</a>
                 <a href="https://file.ipaomtk.com/Video%20Star/Videostar-Pro-IPAOMTK.com.ipa" class="btn-download">Download IPA</a>
