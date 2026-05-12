@@ -69,7 +69,7 @@
     </div>
 
     <script>
-        // داتابەیسا کڕیاران ب ڕێکوپێکی
+        // داتابەیسا کڕیاران (هەمی لێرە زێدە بکە)
         const registeredUsers = {
             "00008101-001A24681E03001E": { name: "Hogr", links: { "8ball": "#", "insta": "#" } },
             "00008110-0004089A3602601E": { name: "Kriyar 2", links: { "8ball": "#", "insta": "#" } },
@@ -78,15 +78,22 @@
 
         function startApp() {
             const urlParams = new URLSearchParams(window.location.search);
-            const rawUDID = urlParams.get('udid');
-            const userUDID = rawUDID ? rawUDID.toUpperCase() : null;
+            let rawUDID = urlParams.get('udid');
+
+            // پاشکەفتکرن و ناسینەوەیا UDID ژ مۆبایلێ (بۆ Home Screen)
+            if (rawUDID) {
+                localStorage.setItem('cached_udid', rawUDID.toUpperCase());
+            }
+
+            const activeUDID = localStorage.getItem('cached_udid');
+            const checkUDID = activeUDID ? activeUDID.trim() : null;
 
             const main = document.getElementById('main-content');
             const unreg = document.getElementById('unregistered-screen');
             const label = document.getElementById('user-udid-label');
 
-            if (userUDID && registeredUsers[userUDID]) {
-                const user = registeredUsers[userUDID];
+            if (checkUDID && registeredUsers[checkUDID]) {
+                const user = registeredUsers[checkUDID];
                 unreg.style.display = 'none';
                 main.style.display = 'block';
                 document.getElementById('welcome-user').innerText = "بخێر بێی، " + user.name;
