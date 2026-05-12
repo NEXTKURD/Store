@@ -13,22 +13,16 @@
     
     <style>
         :root { --main-red: #ff3b30; --vip-orange: #ff9500; --bg-dark: #000; --card-bg: #111; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-dark); color: white; text-align: center; padding: 0; margin: 0; direction: rtl; overflow-x: hidden; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-dark); color: white; text-align: center; padding: 0; margin: 0; direction: rtl; }
         .container { max-width: 450px; margin: auto; padding: 40px 20px; }
-        .logo-text { font-size: 45px; font-weight: 900; letter-spacing: -2px; color: #fff; margin-bottom: 5px; direction: ltr; }
+        .logo-text { font-size: 45px; font-weight: 900; color: #fff; direction: ltr; }
         .logo-text span { color: var(--main-red); }
-        .welcome-msg { color: #fff; font-size: 22px; font-weight: bold; margin-bottom: 10px; }
-        .search-bar { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #333; background: #1a1a1a; color: white; margin-bottom: 25px; box-sizing: border-box; outline: none; text-align: center; font-size: 16px; }
-        .app-card { background: var(--card-bg); padding: 25px; border-radius: 30px; margin-bottom: 25px; border: 1px solid #222; position: relative; }
-        .app-icon { width: 85px; height: 85px; border-radius: 20px; margin-bottom: 15px; object-fit: cover; }
-        .app-info { color: #fff; font-size: 18px; font-weight: bold; margin-bottom: 5px; direction: ltr; }
-        .btn-install { display: block; background: linear-gradient(45deg, var(--main-red), var(--vip-orange)); color: #fff; padding: 16px; text-decoration: none; border-radius: 14px; font-weight: bold; font-size: 17px; cursor: pointer; border: none; width: 100%; }
-        .tg-btn { display: flex; align-items: center; justify-content: center; background: #229ED9; color: white; padding: 14px; text-decoration: none; border-radius: 14px; font-weight: bold; margin-top: 15px; font-size: 16px; width: 100%; box-sizing: border-box; }
-        .lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; text-align: center; box-sizing: border-box; }
-        .udid-display { background: #111; border: 1px dashed var(--main-red); padding: 18px; border-radius: 15px; color: var(--main-red); font-family: monospace; font-size: 13px; margin-bottom: 30px; width: 100%; word-break: break-all; box-sizing: border-box; }
-        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; }
-        .spinner { width: 50px; height: 50px; border: 5px solid #222; border-top: 5px solid var(--main-red); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .welcome-msg { color: #fff; font-size: 20px; font-weight: bold; margin-bottom: 20px; }
+        .app-card { background: var(--card-bg); padding: 25px; border-radius: 30px; margin-bottom: 25px; border: 1px solid #222; }
+        .btn-install { display: block; background: linear-gradient(45deg, var(--main-red), var(--vip-orange)); color: #fff; padding: 16px; text-decoration: none; border-radius: 14px; font-weight: bold; cursor: pointer; border: none; width: 100%; }
+        .lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; }
+        .udid-box { background: #111; border: 1px dashed var(--main-red); padding: 15px; border-radius: 10px; color: var(--main-red); font-family: monospace; font-size: 12px; margin-top: 20px; word-break: break-all; width: 90%; }
+        .tg-btn { display: flex; align-items: center; justify-content: center; background: #229ED9; color: white; padding: 14px; text-decoration: none; border-radius: 14px; margin-top: 15px; width: 100%; }
     </style>
 </head>
 <body>
@@ -36,101 +30,58 @@
     <div id="unregistered-screen" class="lock-screen" style="display: none;">
         <div class="logo-text">NEXT<span>STORE</span></div>
         <h2 style="color:var(--main-red); margin-top: 20px;">DEVICE NOT VERIFIED</h2>
-        <p>بۆ تۆمارکرنا UDID یێ خۆ نامەکێ ڤرێکه</p>
-        <div class="udid-display" id="user-udid-label">---</div>
-        <a href="https://t.me/nextstore9" class="tg-btn">Contact Admin <i class="fab fa-telegram"></i></a>
+        <p>بۆ چالاککرنێ ڤی کۆدی بۆ مە بفرێژە:</p>
+        <div class="udid-box" id="display-id">---</div>
+        <a href="https://t.me/nextstore9" class="tg-btn">Contact Admin <i class="fab fa-telegram" style="margin-right: 8px;"></i></a>
     </div>
-
-    <div id="overlay"><div class="spinner"></div></div>
 
     <div class="container" id="main-content" style="display: none;">
         <div class="logo-text">NEXT<span>STORE</span></div>
-        <div class="welcome-msg" id="welcome-user">Welcome VIP</div>
-        <input type="text" id="searchInput" class="search-bar" placeholder="لێگەڕیان..." onkeyup="searchApp()">
+        <div class="welcome-msg" id="welcome-user">Loading...</div>
         
-        <div id="appList">
-            <div class="app-card">
-                <img src="8ball.png" class="app-icon">
-                <div class="app-info">8 Ball Pool VIP</div>
-                <button onclick="installLink('#')" class="btn-install">Direct Install</button>
-            </div>
-            <div class="app-card">
-                <img src="insta.png" class="app-icon">
-                <div class="app-info">Instagram VIP</div>
-                <button onclick="installLink('#')" class="btn-install">Direct Install</button>
-            </div>
+        <div class="app-card">
+            <div style="margin-bottom: 15px; font-weight: bold; font-size: 18px;">8 Ball Pool VIP</div>
+            <button onclick="alert('لینک زێدە بکە')" class="btn-install">Direct Install</button>
         </div>
-        
-        <a href="https://t.me/nextstore9" class="tg-btn">Join Telegram <i class="fab fa-telegram"></i></a>
     </div>
 
     <script>
-        const registeredUsers = {
+        // --- لیستەیا کڕیاران (لێرە زێدە بکە) ---
+        const users = {
             "00008101-001A24681E03001E": "Hogr",
             "00008110-0004089A3602601E": "Kriyar 2",
             "00008030-001634142150402E": "Kriyar 3"
         };
 
-        function startApp() {
-            const urlParams = new URLSearchParams(window.location.search);
-            let urlUDID = urlParams.get('udid');
+        function init() {
+            const params = new URLSearchParams(window.location.search);
+            let idFromUrl = params.get('udid');
 
-            // ئەگەر ب لینکێ درێژ هات، UDID قفل بکە د کۆکی و لۆکاڵ ستۆرێج دا
-            if (urlUDID) {
-                urlUDID = urlUDID.toUpperCase().trim();
-                localStorage.setItem('final_lock', urlUDID);
-                document.cookie = "final_lock=" + urlUDID + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+            // ١. ئەگەر د لینکێ دا هەبوو، قفل بکە د مۆبایلێ دا
+            if (idFromUrl) {
+                localStorage.setItem('saved_udid', idFromUrl.toUpperCase().trim());
             }
 
-            // خواندنا UDID ژ هەر سێ رێکان دا کو جوداهی نەمینیت
-            const activeUDID = localStorage.getItem('final_lock') || getCookie('final_lock');
+            // ٢. UDID یێ قفلکری وەرگرە
+            const currentID = localStorage.getItem('saved_udid');
 
             const main = document.getElementById('main-content');
-            const unreg = document.getElementById('unregistered-screen');
-            const label = document.getElementById('user-udid-label');
+            const lock = document.getElementById('unregistered-screen');
+            const display = document.getElementById('display-id');
 
-            if (activeUDID && registeredUsers[activeUDID]) {
-                unreg.style.display = 'none';
+            // ٣. پشکنینا UDID د لیستێ دا
+            if (currentID && users[currentID]) {
+                lock.style.display = 'none';
                 main.style.display = 'block';
-                document.getElementById('welcome-user').innerText = "بخێر بێی، " + registeredUsers[activeUDID];
+                document.getElementById('welcome-user').innerText = "بخێر بێی، " + users[currentID];
             } else {
                 main.style.display = 'none';
-                unreg.style.display = 'flex';
-                label.innerText = urlUDID || "UDID NOT FOUND";
+                lock.style.display = 'flex';
+                display.innerText = currentID || "NO ID FOUND";
             }
         }
 
-        function getCookie(name) {
-            let dc = document.cookie;
-            let prefix = name + "=";
-            let begin = dc.indexOf("; " + prefix);
-            if (begin == -1) {
-                begin = dc.indexOf(prefix);
-                if (begin != 0) return null;
-            } else {
-                begin += 2;
-            }
-            let end = document.cookie.indexOf(";", begin);
-            if (end == -1) end = dc.length;
-            return decodeURI(dc.substring(begin + prefix.length, end));
-        }
-
-        function searchApp() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let cards = document.getElementsByClassName('app-card');
-            for (let i = 0; i < cards.length; i++) {
-                let name = cards[i].getElementsByClassName('app-info')[0].innerText.toLowerCase();
-                cards[i].style.display = name.includes(input) ? "block" : "none";
-            }
-        }
-
-        function installLink(url) {
-            if (url === "#") { alert("لینک نەهاتییە دانان!"); return; }
-            document.getElementById('overlay').style.display = 'flex';
-            setTimeout(() => { window.location.href = url; }, 2000);
-        }
-
-        window.onload = startApp;
+        window.onload = init;
     </script>
 </body>
 </html>
