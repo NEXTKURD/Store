@@ -34,8 +34,8 @@
 
     <div id="unregistered-screen" class="lock-screen" style="display: none;">
         <div class="logo-text">NEXT<span>STORE</span></div>
-        <h2 style="color:var(--main-red); margin-top: 20px;">DEVICE NOT VERIFIED</h2>
-        <p>بۆ تۆمارکرنا UDID یێ خۆ نامەکێ ڤرێکه</p>
+        <h2 id="error-title" style="color:var(--main-red); margin-top: 20px;">DEVICE NOT VERIFIED</h2>
+        <p id="error-msg">بۆ تۆمارکرنا UDID یێ خۆ نامەکێ ڤرێکه</p>
         <div class="udid-display" id="user-udid-label">---</div>
         <a href="https://t.me/nextstore9" class="tg-btn">Contact Admin <i class="fab fa-telegram"></i></a>
     </div>
@@ -64,42 +64,45 @@
     <script>
         const registeredUsers = {
             "00008101-001A24681E03001E": { name: "Hogr", links: { "8ball": "#", "insta": "#" } },
-            "00008110-0004089A3602601E": { name: "Kriyar 2", links: { "8ball": "#", "insta": "#" } },
-            "00008030-001634142150402E": { name: "Kriyar 3", links: { "8ball": "#", "insta": "#" } }
+            "00008110-0004089A3602601E": { name: "ROJ AMEDI", links: { "8ball": "#", "insta": "#" } },
+            "00008030-001634142150402E": { name: "HOGR BARWARY", links: { "8ball": "#", "insta": "#" } }
         };
-
-        // فەنکشن بۆ خەزنکرنا UDID د کۆکی دا
-        function setCookie(name, value, days) {
-            const date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            document.cookie = name + "=" + value + ";expires=" + date.toUTCString() + ";path=/";
-        }
-
-        // فەنکشن بۆ خواندنا UDID ژ کۆکی
-        function getCookie(name) {
-            const value = "; " + document.cookie;
-            const parts = value.split("; " + name + "=");
-            if (parts.length === 2) return parts.pop().split(";").shift();
-        }
 
         function startApp() {
             const urlParams = new URLSearchParams(window.location.search);
             let urlUDID = urlParams.get('udid');
-
-            if (urlUDID) {
-                urlUDID = urlUDID.toUpperCase().trim();
-                setCookie('final_udid', urlUDID, 365); // بۆ سالەکێ خەزن بکە
-                localStorage.setItem('final_udid', urlUDID);
-            }
-
-            const activeUDID = urlUDID || getCookie('final_udid') || localStorage.getItem('final_udid');
+            
+            // وەرگرتنا ئەو UDID یا مۆبایل ل سەر قفڵ بووی
+            let lockedUDID = localStorage.getItem('locked_device_id');
 
             const main = document.getElementById('main-content');
             const unreg = document.getElementById('unregistered-screen');
             const label = document.getElementById('user-udid-label');
+            const errorTitle = document.getElementById('error-title');
 
-            if (activeUDID && registeredUsers[activeUDID]) {
-                const user = registeredUsers[activeUDID];
+            // ١. ئەگەر کڕیار ب لینکێ درێژ هات
+            if (urlUDID) {
+                urlUDID = urlUDID.toUpperCase().trim();
+
+                // ئەگەر مۆبایل پێشتر ل سەر کەسەکێ دی قفڵ بووبیت
+                if (lockedUDID && lockedUDID !== urlUDID) {
+                    main.style.display = 'none';
+                    unreg.style.display = 'flex';
+                    errorTitle.innerText = "SECURITY ALERT";
+                    label.innerText = "ئەڤ مۆبایلە ل سەر ناسنامەیەکا دی یا قفڵە!";
+                    return;
+                }
+
+                // ئەگەر مۆبایل نوو بوو و UDID یێ دروست بوو، قفڵ بکە
+                if (!lockedUDID && registeredUsers[urlUDID]) {
+                    localStorage.setItem('locked_device_id', urlUDID);
+                    lockedUDID = urlUDID;
+                }
+            }
+
+            // ٢. پشکنینا دوماهیێ (بۆ Safari و Home Screen)
+            if (lockedUDID && registeredUsers[lockedUDID]) {
+                const user = registeredUsers[lockedUDID];
                 unreg.style.display = 'none';
                 main.style.display = 'block';
                 document.getElementById('welcome-user').innerText = "بخێر بێی، " + user.name;
