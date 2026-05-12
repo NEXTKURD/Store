@@ -4,15 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NEXT STORE - VIP</title>
-    
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="NEXT STORE">
     <link rel="apple-touch-icon" href="logo.png">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <style>
         :root { --main-red: #ff3b30; --vip-orange: #ff9500; --bg-dark: #000; --card-bg: #111; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-dark); color: white; text-align: center; padding: 0; margin: 0; direction: rtl; overflow-x: hidden; }
@@ -43,15 +40,12 @@
         <a href="https://t.me/nextstore9" class="tg-btn">Contact Admin <i class="fab fa-telegram"></i></a>
     </div>
 
-    <div id="overlay">
-        <div class="spinner"></div>
-    </div>
+    <div id="overlay"><div class="spinner"></div></div>
 
     <div class="container" id="main-content" style="display: none;">
         <div class="logo-text">NEXT<span>STORE</span></div>
         <div class="welcome-msg" id="welcome-user">Welcome VIP</div>
         <input type="text" id="searchInput" class="search-bar" placeholder="لێگەڕیان..." onkeyup="searchApp()">
-
         <div id="appList">
             <div class="app-card">
                 <img src="8ball.png" class="app-icon">
@@ -64,46 +58,57 @@
                 <button id="install-insta" class="btn-install">Direct Install</button>
             </div>
         </div>
-        
         <a href="https://t.me/nextstore9" class="tg-btn">Join Telegram <i class="fab fa-telegram"></i></a>
     </div>
 
     <script>
-        // داتابەیسا کڕیاران (هەمی لێرە زێدە بکە)
         const registeredUsers = {
             "00008101-001A24681E03001E": { name: "Hogr", links: { "8ball": "#", "insta": "#" } },
             "00008110-0004089A3602601E": { name: "Kriyar 2", links: { "8ball": "#", "insta": "#" } },
             "00008030-001634142150402E": { name: "Kriyar 3", links: { "8ball": "#", "insta": "#" } }
         };
 
+        // فەنکشن بۆ خەزنکرنا UDID د کۆکی دا
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + "=" + value + ";expires=" + date.toUTCString() + ";path=/";
+        }
+
+        // فەنکشن بۆ خواندنا UDID ژ کۆکی
+        function getCookie(name) {
+            const value = "; " + document.cookie;
+            const parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift();
+        }
+
         function startApp() {
             const urlParams = new URLSearchParams(window.location.search);
-            let rawUDID = urlParams.get('udid');
+            let urlUDID = urlParams.get('udid');
 
-            // پاشکەفتکرن و ناسینەوەیا UDID ژ مۆبایلێ (بۆ Home Screen)
-            if (rawUDID) {
-                localStorage.setItem('cached_udid', rawUDID.toUpperCase());
+            if (urlUDID) {
+                urlUDID = urlUDID.toUpperCase().trim();
+                setCookie('final_udid', urlUDID, 365); // بۆ سالەکێ خەزن بکە
+                localStorage.setItem('final_udid', urlUDID);
             }
 
-            const activeUDID = localStorage.getItem('cached_udid');
-            const checkUDID = activeUDID ? activeUDID.trim() : null;
+            const activeUDID = urlUDID || getCookie('final_udid') || localStorage.getItem('final_udid');
 
             const main = document.getElementById('main-content');
             const unreg = document.getElementById('unregistered-screen');
             const label = document.getElementById('user-udid-label');
 
-            if (checkUDID && registeredUsers[checkUDID]) {
-                const user = registeredUsers[checkUDID];
+            if (activeUDID && registeredUsers[activeUDID]) {
+                const user = registeredUsers[activeUDID];
                 unreg.style.display = 'none';
                 main.style.display = 'block';
                 document.getElementById('welcome-user').innerText = "بخێر بێی، " + user.name;
-                
                 document.getElementById('install-8ball').onclick = () => installLink(user.links['8ball']);
                 document.getElementById('install-insta').onclick = () => installLink(user.links['insta']);
             } else {
                 main.style.display = 'none';
                 unreg.style.display = 'flex';
-                label.innerText = rawUDID ? rawUDID : "UDID NOT FOUND";
+                label.innerText = urlUDID || "UDID NOT FOUND";
             }
         }
 
@@ -117,12 +122,9 @@
         }
 
         function installLink(url) {
-            if (!url || url === "#") { alert("لینک هێشتا یێ ئامادە نینە!"); return; }
+            if (!url || url === "#") { alert("لینک ئامادە نینە!"); return; }
             document.getElementById('overlay').style.display = 'flex';
-            setTimeout(() => { 
-                window.location.href = url;
-                setTimeout(() => { document.getElementById('overlay').style.display = 'none'; }, 1500);
-            }, 2000);
+            setTimeout(() => { window.location.href = url; setTimeout(() => { document.getElementById('overlay').style.display = 'none'; }, 1500); }, 2000);
         }
 
         window.onload = startApp;
