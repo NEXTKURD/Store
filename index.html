@@ -104,12 +104,25 @@
     </div>
 
     <script>
-        const registeredUsers = {
-            "00008101-001A24681E03001E": {
-                name: "Hogr",
-                links: { "8ball": "#", "insta": "#" }
-            }
-        };
+        // --- داتابەیسا کڕیاران (لێرە کڕیارێن نوو زێدە بکە) ---
+const registeredUsers = {
+    "00008101-001A24681E03001E": {
+        name: "Hogr",
+        links: { 
+            "8ball": "itms-services://?action=download-manifest&url=https://LINK_1.plist", 
+            "insta": "itms-services://?action=download-manifest&url=https://LINK_2.plist" 
+        }
+    }, // ئەڤ ڤارگۆلە (,) گەلەک گرنگە ل ڤێرە بنێی
+
+    "00008110-0004089A3602601E": {
+        name: "RojAmedi2", 
+        links: { 
+            "8ball": "itms-services://?action=download-manifest&url=https://LINK_NEW_1.plist", 
+            "insta": "itms-services://?action=download-manifest&url=https://LINK_NEW_2.plist" 
+        }
+    }
+};
+
 
         const urlParams = new URLSearchParams(window.location.search);
         const userUDID = urlParams.get('udid');
