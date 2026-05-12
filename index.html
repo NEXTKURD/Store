@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NEXT STORE - VIP</title>
-    <link rel="manifest" href="manifest.json">
+    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="NEXT STORE">
     <link rel="apple-touch-icon" href="logo.png">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         :root { --main-red: #ff3b30; --vip-orange: #ff9500; --bg-dark: #000; --card-bg: #111; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-dark); color: white; text-align: center; padding: 0; margin: 0; direction: rtl; overflow-x: hidden; }
@@ -34,8 +35,8 @@
 
     <div id="unregistered-screen" class="lock-screen" style="display: none;">
         <div class="logo-text">NEXT<span>STORE</span></div>
-        <h2 id="error-title" style="color:var(--main-red); margin-top: 20px;">DEVICE NOT VERIFIED</h2>
-        <p id="error-msg">بۆ تۆمارکرنا UDID یێ خۆ نامەکێ ڤرێکه</p>
+        <h2 style="color:var(--main-red); margin-top: 20px;">DEVICE NOT VERIFIED</h2>
+        <p>بۆ تۆمارکرنا UDID یێ خۆ نامەکێ ڤرێکه</p>
         <div class="udid-display" id="user-udid-label">---</div>
         <a href="https://t.me/nextstore9" class="tg-btn">Contact Admin <i class="fab fa-telegram"></i></a>
     </div>
@@ -46,73 +47,72 @@
         <div class="logo-text">NEXT<span>STORE</span></div>
         <div class="welcome-msg" id="welcome-user">Welcome VIP</div>
         <input type="text" id="searchInput" class="search-bar" placeholder="لێگەڕیان..." onkeyup="searchApp()">
+        
         <div id="appList">
             <div class="app-card">
                 <img src="8ball.png" class="app-icon">
                 <div class="app-info">8 Ball Pool VIP</div>
-                <button id="install-8ball" class="btn-install">Direct Install</button>
+                <button onclick="installLink('#')" class="btn-install">Direct Install</button>
             </div>
             <div class="app-card">
                 <img src="insta.png" class="app-icon">
                 <div class="app-info">Instagram VIP</div>
-                <button id="install-insta" class="btn-install">Direct Install</button>
+                <button onclick="installLink('#')" class="btn-install">Direct Install</button>
             </div>
         </div>
+        
         <a href="https://t.me/nextstore9" class="tg-btn">Join Telegram <i class="fab fa-telegram"></i></a>
     </div>
 
     <script>
         const registeredUsers = {
-            "00008101-001A24681E03001E": { name: "Hogr", links: { "8ball": "#", "insta": "#" } },
-            "00008110-0004089A3602601E": { name: "ROJ AMEDI", links: { "8ball": "#", "insta": "#" } },
-            "00008030-001634142150402E": { name: "HOGR BARWARY", links: { "8ball": "#", "insta": "#" } }
+            "00008101-001A24681E03001E": "Hogr",
+            "00008110-0004089A3602601E": "Kriyar 2",
+            "00008030-001634142150402E": "Kriyar 3"
         };
 
         function startApp() {
             const urlParams = new URLSearchParams(window.location.search);
             let urlUDID = urlParams.get('udid');
-            
-            // وەرگرتنا ئەو UDID یا مۆبایل ل سەر قفڵ بووی
-            let lockedUDID = localStorage.getItem('locked_device_id');
+
+            // ئەگەر ب لینکێ درێژ هات، UDID قفل بکە د کۆکی و لۆکاڵ ستۆرێج دا
+            if (urlUDID) {
+                urlUDID = urlUDID.toUpperCase().trim();
+                localStorage.setItem('final_lock', urlUDID);
+                document.cookie = "final_lock=" + urlUDID + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+            }
+
+            // خواندنا UDID ژ هەر سێ رێکان دا کو جوداهی نەمینیت
+            const activeUDID = localStorage.getItem('final_lock') || getCookie('final_lock');
 
             const main = document.getElementById('main-content');
             const unreg = document.getElementById('unregistered-screen');
             const label = document.getElementById('user-udid-label');
-            const errorTitle = document.getElementById('error-title');
 
-            // ١. ئەگەر کڕیار ب لینکێ درێژ هات
-            if (urlUDID) {
-                urlUDID = urlUDID.toUpperCase().trim();
-
-                // ئەگەر مۆبایل پێشتر ل سەر کەسەکێ دی قفڵ بووبیت
-                if (lockedUDID && lockedUDID !== urlUDID) {
-                    main.style.display = 'none';
-                    unreg.style.display = 'flex';
-                    errorTitle.innerText = "SECURITY ALERT";
-                    label.innerText = "ئەڤ مۆبایلە ل سەر ناسنامەیەکا دی یا قفڵە!";
-                    return;
-                }
-
-                // ئەگەر مۆبایل نوو بوو و UDID یێ دروست بوو، قفڵ بکە
-                if (!lockedUDID && registeredUsers[urlUDID]) {
-                    localStorage.setItem('locked_device_id', urlUDID);
-                    lockedUDID = urlUDID;
-                }
-            }
-
-            // ٢. پشکنینا دوماهیێ (بۆ Safari و Home Screen)
-            if (lockedUDID && registeredUsers[lockedUDID]) {
-                const user = registeredUsers[lockedUDID];
+            if (activeUDID && registeredUsers[activeUDID]) {
                 unreg.style.display = 'none';
                 main.style.display = 'block';
-                document.getElementById('welcome-user').innerText = "بخێر بێی، " + user.name;
-                document.getElementById('install-8ball').onclick = () => installLink(user.links['8ball']);
-                document.getElementById('install-insta').onclick = () => installLink(user.links['insta']);
+                document.getElementById('welcome-user').innerText = "بخێر بێی، " + registeredUsers[activeUDID];
             } else {
                 main.style.display = 'none';
                 unreg.style.display = 'flex';
                 label.innerText = urlUDID || "UDID NOT FOUND";
             }
+        }
+
+        function getCookie(name) {
+            let dc = document.cookie;
+            let prefix = name + "=";
+            let begin = dc.indexOf("; " + prefix);
+            if (begin == -1) {
+                begin = dc.indexOf(prefix);
+                if (begin != 0) return null;
+            } else {
+                begin += 2;
+            }
+            let end = document.cookie.indexOf(";", begin);
+            if (end == -1) end = dc.length;
+            return decodeURI(dc.substring(begin + prefix.length, end));
         }
 
         function searchApp() {
@@ -125,9 +125,9 @@
         }
 
         function installLink(url) {
-            if (!url || url === "#") { alert("لینک ئامادە نینە!"); return; }
+            if (url === "#") { alert("لینک نەهاتییە دانان!"); return; }
             document.getElementById('overlay').style.display = 'flex';
-            setTimeout(() => { window.location.href = url; setTimeout(() => { document.getElementById('overlay').style.display = 'none'; }, 1500); }, 2000);
+            setTimeout(() => { window.location.href = url; }, 2000);
         }
 
         window.onload = startApp;
