@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXT STORE - VIP EDITION</title>
+    <title>NEXT STORE - VIP</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,9 +16,9 @@
     <style>
         :root { --main-red: #ff3b30; --vip-orange: #ff9500; --bg-dark: #000; --card-bg: #111; }
         
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-dark); color: white; text-align: center; padding: 0; margin: 0; direction: rtl; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-dark); color: white; text-align: center; padding: 0; margin: 0; direction: rtl; overflow-x: hidden; }
         
-        /* Layout Containers */
+        /* Containers */
         .container { max-width: 450px; margin: auto; padding: 40px 20px; }
         .logo-text { font-size: 45px; font-weight: 900; letter-spacing: -2px; color: #fff; margin-bottom: 5px; direction: ltr; }
         .logo-text span { color: var(--main-red); }
@@ -27,33 +27,31 @@
         .store-desc { color: #888; font-size: 14px; margin-bottom: 30px; line-height: 1.6; }
         
         /* Search Bar */
-        .search-bar { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #333; background: #1a1a1a; color: white; margin-bottom: 25px; box-sizing: border-box; outline: none; text-align: center; font-size: 16px; transition: 0.3s; }
-        .search-bar:focus { border-color: var(--vip-orange); box-shadow: 0 0 10px rgba(255, 149, 0, 0.2); }
+        .search-bar { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #333; background: #1a1a1a; color: white; margin-bottom: 25px; box-sizing: border-box; outline: none; text-align: center; font-size: 16px; }
 
         /* App Cards */
-        .app-card { background: var(--card-bg); padding: 25px; border-radius: 30px; margin-bottom: 25px; border: 1px solid #222; position: relative; overflow: hidden; transition: 0.3s; }
+        .app-card { background: var(--card-bg); padding: 25px; border-radius: 30px; margin-bottom: 25px; border: 1px solid #222; position: relative; overflow: hidden; }
         .app-icon { width: 85px; height: 85px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); object-fit: cover; }
         .app-info { color: #fff; font-size: 18px; font-weight: bold; margin-bottom: 5px; direction: ltr; }
         .app-details { color: #666; font-size: 13px; margin-bottom: 20px; direction: ltr; }
         
-        /* Badges */
-        .status-badge { position: absolute; top: 15px; left: 15px; background: #4cd964; color: #000; font-size: 10px; font-weight: bold; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; }
-
         /* Buttons */
-        .btn-install { display: block; background: linear-gradient(45deg, var(--main-red), var(--vip-orange)); color: #fff; padding: 16px; text-decoration: none; border-radius: 14px; font-weight: bold; font-size: 17px; transition: 0.3s; margin-bottom: 10px; cursor: pointer; border: none; width: 100%; }
-        .btn-install:active { transform: scale(0.95); }
-        
-        .tg-btn { display: flex; align-items: center; justify-content: center; background: #229ED9; color: white; padding: 14px; text-decoration: none; border-radius: 14px; font-weight: bold; margin-top: 20px; font-size: 16px; }
+        .btn-install { display: block; background: linear-gradient(45deg, var(--main-red), var(--vip-orange)); color: #fff; padding: 16px; text-decoration: none; border-radius: 14px; font-weight: bold; font-size: 17px; cursor: pointer; border: none; width: 100%; }
+        .tg-btn { display: flex; align-items: center; justify-content: center; background: #229ED9; color: white; padding: 14px; text-decoration: none; border-radius: 14px; font-weight: bold; margin-top: 15px; font-size: 16px; width: 100%; box-sizing: border-box; }
+        .tg-btn i { margin-left: 10px; }
 
-        /* Screens */
+        /* Lock Screens */
+        .lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; text-align: center; box-sizing: border-box; }
+        .error-title { color: var(--main-red); font-size: 24px; font-weight: 800; margin: 20px 0 10px 0; }
+        .instruction-text { color: #eee; font-size: 16px; margin-bottom: 25px; line-height: 1.5; }
+        
+        .udid-display { background: #111; border: 1px dashed var(--main-red); padding: 18px; border-radius: 15px; color: var(--main-red); font-family: monospace; font-size: 13px; margin-bottom: 30px; width: 100%; word-break: break-all; box-sizing: border-box; font-weight: bold; }
+        
         #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; }
         .spinner { width: 50px; height: 50px; border: 5px solid #222; border-top: 5px solid var(--main-red); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; text-align: center; }
-        .udid-display { background: #1a1a1a; border: 1px dashed var(--main-red); padding: 15px; border-radius: 12px; color: var(--main-red); font-family: monospace; font-size: 11px; margin: 20px 0; width: 100%; word-break: break-all; }
         
-        .footer { margin-top: 40px; font-size: 12px; color: #333; letter-spacing: 1px; }
+        .footer { margin-top: 40px; font-size: 12px; color: #333; }
     </style>
 </head>
 <body>
@@ -63,10 +61,9 @@
             document.write(`
                 <div class="lock-screen">
                     <div class="logo-text">NEXT<span>STORE</span></div>
-                    <h2 style="color:var(--main-red);">ACCESS LOCKED</h2>
-                    <p>بۆ پاراستنا ستۆرێ و ئەمنیاتێ، دڤێت ئەپی بێخیە سەر شاشێ.</p>
-                    <p style="font-size:14px; color:#888;">١. کلیک ل دوگمەیا Share بکە <br> ٢. پاشان 'Add to Home Screen' هەلبژێرە</p>
-                    <img src="https://images.macrumors.com/article-new/2025/08/ios-add-to-home-screen1.jpg" style="width:200px; border-radius:15px; margin-top:20px; opacity:0.7;">
+                    <h2 class="error-title">ACCESS LOCKED</h2>
+                    <p class="instruction-text">بۆ پاراستنا ستۆرێ و ئەمنیاتێ، دڤێت ئەپی بێخیە سەر شاشێ (Add to Home Screen).</p>
+                    <img src="https://images.macrumors.com/article-new/2025/08/ios-add-to-home-screen1.jpg" style="width:200px; border-radius:15px; opacity:0.6;">
                 </div>
             `);
         }
@@ -74,78 +71,60 @@
 
     <div id="unregistered-screen" class="lock-screen" style="display: none;">
         <div class="logo-text">NEXT<span>STORE</span></div>
-        <h2 style="color:var(--main-red); margin-top: 20px;">DEVICE NOT VERIFIED</h2>
-        <p>ئەڤ مۆبایلە یا تۆمارکری نینە. UDID یێ خۆ بنێره بۆ چالاککرنێ:</p>
+        <div class="error-title">DEVICE NOT VERIFIED</div>
+        <div class="instruction-text">بۆ تۆمارکرنا UDID یێ خۆ نامەکێ ڤرێکه</div>
         <div class="udid-display" id="user-udid-label">---</div>
-        <a href="https://t.me/next_8ball" class="tg-btn" style="width:100%">Contact Admin <i class="fab fa-telegram" style="margin-right:10px;"></i></a>
+        <a href="https://t.me/nextstore9" class="tg-btn">Contact Admin <i class="fab fa-telegram"></i></a>
     </div>
 
     <div id="overlay">
         <div class="spinner"></div>
-        <p style="margin-top:20px; font-weight:bold;">چاوەڕێ بە...</p>
     </div>
 
     <div class="container" id="main-content" style="display: none;">
         <div class="logo-text">NEXT<span>STORE</span></div>
-        <div class="welcome-msg" id="welcome-user">Welcome VIP User</div>
-        <div class="store-desc">باشترین خزمەتگوزاری بۆ کڕیارێن تایبەت.</div>
-
-        <input type="text" id="searchInput" class="search-bar" placeholder="لێگەڕیان د ئەپان دا..." onkeyup="searchApp()">
+        <div class="welcome-msg" id="welcome-user">Welcome VIP</div>
+        <input type="text" id="searchInput" class="search-bar" placeholder="لێگەڕیان..." onkeyup="searchApp()">
 
         <div id="appList">
             <div class="app-card">
-                <span class="status-badge">Private</span>
                 <img src="8ball.png" class="app-icon">
                 <div class="app-info">8 Ball Pool VIP</div>
-                <div class="app-details">Long Lines | Anti-Ban | v56.18.0</div>
                 <button id="install-8ball" class="btn-install">Direct Install</button>
             </div>
-
             <div class="app-card">
-                <span class="status-badge">Private</span>
                 <img src="insta.png" class="app-icon">
                 <div class="app-info">Instagram VIP</div>
-                <div class="app-details">Download Media | No Ads | Theta</div>
                 <button id="install-insta" class="btn-install">Direct Install</button>
             </div>
         </div>
-
-        <a href="https://t.me/next_8ball" class="tg-btn">Join Community <i class="fab fa-telegram" style="margin-right:10px;"></i></a>
-        <div class="footer">© 2026 NEXT STORE - POWERED BY HOGR</div>
+        
+        <a href="https://t.me/nextstore9" class="tg-btn">Join Telegram <i class="fab fa-telegram"></i></a>
+        <div class="footer">© 2026 NEXT STORE</div>
     </div>
 
     <script>
-        // --- داتابەیسا کڕیاران (لێرە کڕیارێن نوو زێدە بکە) ---
         const registeredUsers = {
             "00008101-001A24681E03001E": {
                 name: "Hogr",
-                links: {
-                    "8ball": "itms-services://?action=download-manifest&url=https://YOUR_LINK_HERE.plist",
-                    "insta": "itms-services://?action=download-manifest&url=https://YOUR_LINK_HERE.plist"
-                }
+                links: { "8ball": "#", "insta": "#" }
             }
-            // کڕیارێن نوو ل ڤێرە زێدە بکە
         };
 
         const urlParams = new URLSearchParams(window.location.search);
         const userUDID = urlParams.get('udid');
 
         function startApp() {
-            const mainContent = document.getElementById('main-content');
-            const unregScreen = document.getElementById('unregistered-screen');
-            const udidLabel = document.getElementById('user-udid-label');
+            const main = document.getElementById('main-content');
+            const unreg = document.getElementById('unregistered-screen');
+            const label = document.getElementById('user-udid-label');
 
             if (userUDID && registeredUsers[userUDID]) {
-                const user = registeredUsers[userUDID];
-                mainContent.style.display = 'block';
-                document.getElementById('welcome-user').innerText = "بخێر بێی، " + user.name;
-                
-                // Set links
-                document.getElementById('install-8ball').onclick = () => installLink(user.links['8ball']);
-                document.getElementById('install-insta').onclick = () => installLink(user.links['insta']);
+                main.style.display = 'block';
+                document.getElementById('welcome-user').innerText = "بخێر بێی، " + registeredUsers[userUDID].name;
             } else {
-                unregScreen.style.display = 'flex';
-                udidLabel.innerText = userUDID ? userUDID : "UDID NOT FOUND";
+                unreg.style.display = 'flex';
+                label.innerText = userUDID ? userUDID : "UDID NOT FOUND";
             }
         }
 
@@ -159,15 +138,8 @@
         }
 
         function installLink(url) {
-            if (!url || url.includes("YOUR_LINK")) {
-                alert("لینک هێشتا یێ ئامادە نینە!");
-                return;
-            }
             document.getElementById('overlay').style.display = 'flex';
-            setTimeout(() => {
-                window.location.href = url;
-                setTimeout(() => { document.getElementById('overlay').style.display = 'none'; }, 1500);
-            }, 2500);
+            setTimeout(() => { window.location.href = url; }, 2000);
         }
 
         window.onload = startApp;
