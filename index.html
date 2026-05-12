@@ -12,26 +12,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        :root { --main-red: #ff3b30; --vip-orange: #ff9500; --bg-dark: #000; --card-bg: #111; }
+        :root { --main-red: #ff3b30; --bg-dark: #000; --card-bg: #111; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-dark); color: white; text-align: center; padding: 0; margin: 0; direction: rtl; }
         .container { max-width: 450px; margin: auto; padding: 40px 20px; }
-        .logo-text { font-size: 45px; font-weight: 900; color: #fff; direction: ltr; }
+        .logo-text { font-size: 45px; font-weight: 900; color: #fff; direction: ltr; margin-bottom: 10px; }
         .logo-text span { color: var(--main-red); }
-        .welcome-msg { color: #fff; font-size: 20px; font-weight: bold; margin-bottom: 20px; }
+        .welcome-msg { color: #fff; font-size: 22px; font-weight: bold; margin-bottom: 20px; }
         .app-card { background: var(--card-bg); padding: 25px; border-radius: 30px; margin-bottom: 25px; border: 1px solid #222; }
-        .btn-install { display: block; background: linear-gradient(45deg, var(--main-red), var(--vip-orange)); color: #fff; padding: 16px; text-decoration: none; border-radius: 14px; font-weight: bold; cursor: pointer; border: none; width: 100%; }
+        .btn-install { display: block; background: linear-gradient(45deg, var(--main-red), #ff9500); color: #fff; padding: 16px; text-decoration: none; border-radius: 14px; font-weight: bold; cursor: pointer; border: none; width: 100%; font-size: 17px; }
         .lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; }
         .udid-box { background: #111; border: 1px dashed var(--main-red); padding: 15px; border-radius: 10px; color: var(--main-red); font-family: monospace; font-size: 12px; margin-top: 20px; word-break: break-all; width: 90%; }
-        .tg-btn { display: flex; align-items: center; justify-content: center; background: #229ED9; color: white; padding: 14px; text-decoration: none; border-radius: 14px; margin-top: 15px; width: 100%; }
+        .tg-btn { display: flex; align-items: center; justify-content: center; background: #229ED9; color: white; padding: 14px; text-decoration: none; border-radius: 14px; margin-top: 15px; width: 100%; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="unregistered-screen" class="lock-screen" style="display: none;">
         <div class="logo-text">NEXT<span>STORE</span></div>
-        <h2 style="color:var(--main-red); margin-top: 20px;">DEVICE NOT VERIFIED</h2>
+        <h2 style="color:var(--main-red);">DEVICE NOT VERIFIED</h2>
         <p>بۆ چالاککرنێ ڤی کۆدی بۆ مە بفرێژە:</p>
-        <div class="udid-box" id="display-id">---</div>
+        <div class="udid-box" id="display-id">NO UDID FOUND</div>
         <a href="https://t.me/nextstore9" class="tg-btn">Contact Admin <i class="fab fa-telegram" style="margin-right: 8px;"></i></a>
     </div>
 
@@ -41,8 +41,15 @@
         
         <div class="app-card">
             <div style="margin-bottom: 15px; font-weight: bold; font-size: 18px;">8 Ball Pool VIP</div>
-            <button onclick="alert('لینک زێدە بکە')" class="btn-install">Direct Install</button>
+            <button onclick="installLink('LINK_HERE')" class="btn-install">Direct Install</button>
         </div>
+
+        <div class="app-card">
+            <div style="margin-bottom: 15px; font-weight: bold; font-size: 18px;">Instagram VIP</div>
+            <button onclick="installLink('LINK_HERE')" class="btn-install">Direct Install</button>
+        </div>
+
+        <a href="https://t.me/nextstore9" class="tg-btn">Join Telegram <i class="fab fa-telegram" style="margin-right: 8px;"></i></a>
     </div>
 
     <script>
@@ -53,35 +60,41 @@
             "00008030-001634142150402E": "Kriyar 3"
         };
 
-        function init() {
+        function startApp() {
+            // ١. وەرگرتنا UDID ژ لینکێ (URL)
             const params = new URLSearchParams(window.location.search);
-            let idFromUrl = params.get('udid');
+            let urlID = params.get('udid');
 
-            // ١. ئەگەر د لینکێ دا هەبوو، قفل بکە د مۆبایلێ دا
-            if (idFromUrl) {
-                localStorage.setItem('saved_udid', idFromUrl.toUpperCase().trim());
+            // ٢. ئەگەر د لینکێ دا هەبوو، پاشکەفت بکە د ناڤ مۆبایلێ دا
+            if (urlID) {
+                localStorage.setItem('user_auth_id', urlID.toUpperCase().trim());
             }
 
-            // ٢. UDID یێ قفلکری وەرگرە
-            const currentID = localStorage.getItem('saved_udid');
+            // ٣. ناسنامەیا پاشکەفتکری وەرگرە
+            const storedID = localStorage.getItem('user_auth_id');
 
             const main = document.getElementById('main-content');
             const lock = document.getElementById('unregistered-screen');
             const display = document.getElementById('display-id');
 
-            // ٣. پشکنینا UDID د لیستێ دا
-            if (currentID && users[currentID]) {
+            // ٤. پشکنینا UDID (ڤەحصکرن)
+            if (storedID && users[storedID]) {
                 lock.style.display = 'none';
                 main.style.display = 'block';
-                document.getElementById('welcome-user').innerText = "بخێر بێی، " + users[currentID];
+                document.getElementById('welcome-user').innerText = "بخێر بێی، " + users[storedID];
             } else {
                 main.style.display = 'none';
                 lock.style.display = 'flex';
-                display.innerText = currentID || "NO ID FOUND";
+                display.innerText = storedID || "UDID NOT FOUND";
             }
         }
 
-        window.onload = init;
+        function installLink(url) {
+            if(url === 'LINK_HERE') { alert("لینک هێشتا نەهاتییە دانان!"); return; }
+            window.location.href = url;
+        }
+
+        window.onload = startApp;
     </script>
 </body>
 </html>
